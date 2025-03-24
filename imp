@@ -1,0 +1,37 @@
+import math
+
+def minimax(depth, index, is_max, scores, max_depth):
+    if depth == max_depth:  # Base case: return leaf node valu\e
+        return scores[index]
+
+    next_depth = depth + 1
+    print(next_depth)
+    left = minimax(next_depth, index * 2, not is_max, scores, max_depth)
+    print(left)
+    print("r")
+    right = minimax(next_depth, index * 2 + 1, not is_max, scores, max_depth)
+    print("z")
+    print(right)
+    print("P")
+
+    return max(left, right) if is_max else min(left, right)
+
+scores = [3, 5, 2, 9, 12, 5, 23, 23]
+max_depth = int(math.log2(len(scores)))
+
+print("Optimal value:", minimax(0, 0, True, scores, max_depth))
+#constraint stasifctaion
+from simpleai.search import backtrack,CspProblem
+def constraint_func(names,values):
+  return values[0]!=values[1]
+names=("ma","dh","di","ne")
+colors={name:["red","green"] for name in names}
+constraints=[(("ma","dh"),constraint_func),
+             (("di","dh"),constraint_func),
+             (("di","ne"),constraint_func),
+             (("ma","ne"),constraint_func)]
+probelm=CspProblem(names,colors,constraints)
+output=backtrack(probelm)
+
+for i,v in output.items():
+  print(i,">",v)
