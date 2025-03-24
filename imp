@@ -35,3 +35,28 @@ output=backtrack(probelm)
 
 for i,v in output.items():
   print(i,">",v)
+#dfs water jug
+def dfs(jug1, jug2, target, visited=set()):
+    if (jug1, jug2) in visited:
+        return False  # Avoid repeating states
+    visited.add((jug1, jug2))
+
+    print(f"Current State: ({jug1}, {jug2})")  # Show each step
+
+    if (jug1, jug2) == target:  
+        print("✅ Solution Found!")
+        return True  
+
+    return (dfs(5, jug2, target, visited) or  # Fill Jug1 (5L)
+            dfs(jug1, 3, target, visited) or  # Fill Jug2 (3L)
+            dfs(0, jug2, target, visited) or  # Empty Jug1
+            dfs(jug1, 0, target, visited) or  # Empty Jug2
+            dfs(min(jug1 + jug2, 5), max(0, jug1 + jug2 - 5), target, visited) or  # Pour Jug2 → Jug1
+            dfs(max(0, jug1 + jug2 - 3), min(jug1 + jug2, 3), target, visited))  # Pour Jug1 → Jug2
+
+# Get user input for target state
+x, y = map(int, input("Enter target state (x y): ").split())
+
+# Start DFS from (0, 0)
+dfs(0, 0, (x, y))
+
